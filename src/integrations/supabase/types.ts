@@ -49,6 +49,73 @@ export type Database = {
           },
         ]
       }
+      tenant_accounts: {
+        Row: {
+          account_id: string
+          created_at: string
+          id: string
+          source: string
+          tenant_id: string
+        }
+        Insert: {
+          account_id: string
+          created_at?: string
+          id?: string
+          source: string
+          tenant_id: string
+        }
+        Update: {
+          account_id?: string
+          created_at?: string
+          id?: string
+          source?: string
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenant_accounts_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tenant_branding: {
+        Row: {
+          accent_color: string | null
+          logo_url: string | null
+          primary_color: string | null
+          radius: string | null
+          tagline: string | null
+          tenant_id: string
+        }
+        Insert: {
+          accent_color?: string | null
+          logo_url?: string | null
+          primary_color?: string | null
+          radius?: string | null
+          tagline?: string | null
+          tenant_id: string
+        }
+        Update: {
+          accent_color?: string | null
+          logo_url?: string | null
+          primary_color?: string | null
+          radius?: string | null
+          tagline?: string | null
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenant_branding_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: true
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tenant_products: {
         Row: {
           created_at: string
