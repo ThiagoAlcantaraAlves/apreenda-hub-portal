@@ -32,6 +32,10 @@
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
   --color-champagne: var(--champagne);
+  --color-status-excellent: var(--status-excellent);
+  --color-status-good: var(--status-good);
+  --color-status-warning: var(--status-warning);
+  --color-status-critical: var(--status-critical);
   --font-display: "Cinzel", serif;
   --font-sans: "Montserrat", system-ui, sans-serif;
 }
@@ -61,6 +65,15 @@
   --gold: oklch(0.74 0.12 85);
   --gold-soft: oklch(0.74 0.12 85 / 50%);
   --champagne: oklch(0.88 0.05 85);
+  /* status (dashboard) */
+  --status-excellent: oklch(0.62 0.16 145);
+  --status-good: oklch(0.70 0.12 215);
+  --status-warning: oklch(0.78 0.15 75);
+  --status-critical: oklch(0.62 0.22 25);
+  /* gradients / shadows / motion (dashboard) */
+  --gradient-primary: linear-gradient(135deg, var(--primary) 0%, color-mix(in oklab, var(--accent) 70%, var(--primary)) 100%);
+  --shadow-card: 0 1px 2px color-mix(in oklab, var(--primary) 6%, transparent), 0 8px 24px -16px color-mix(in oklab, var(--primary) 20%, transparent);
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dark {
@@ -101,4 +114,26 @@
 
 @utility gold-border {
   border: 1px solid var(--gold-soft);
+}
+
+/* Utilitários do dashboard */
+@utility text-gradient-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, color-mix(in oklab, var(--accent) 70%, var(--primary)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility bg-gradient-primary {
+  background: var(--gradient-primary);
+}
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}
+@utility transition-smooth {
+  transition: all 280ms var(--transition-smooth);
+}
+
+@media print {
+  .no-print { display: none !important; }
+  html { background: white; }
 }

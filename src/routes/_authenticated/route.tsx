@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { LogOut, Shield } from "lucide-react";
+import { TenantBranding } from "@/components/TenantBranding";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -24,6 +25,7 @@ function AuthedLayout() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <TenantBranding />
       <header className="border-b border-border/60 bg-card/60 backdrop-blur">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/home" className="flex items-baseline gap-3">

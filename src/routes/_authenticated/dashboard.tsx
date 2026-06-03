@@ -1,26 +1,61 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { subDays } from "date-fns";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { BarChart3, ArrowLeft } from "lucide-react";
+import { FilterBar, type FilterState } from "@/components/marketing/FilterBar";
+import { MetaAdsTab } from "@/components/marketing/tabs/MetaAdsTab";
+import { LoadingState } from "@/components/marketing/shared/LoadingState";
+import { ErrorState } from "@/components/marketing/shared/ErrorState";
+import { useWindsorData } from "@/hooks/useWindsorData";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: DashboardPage,
 });
 
+function defaultDates() {
+  return {
+    start: subDays(new Date(), 6).toISOString().slice(0, 10),
+    end: new Date().toISOString().slice(0, 10),
+  };
+}
+
 function DashboardPage() {
+  const d = defaultDates();
+  const [filters, setFilters] = useState<FilterState>({
+    start: d.start,
+    end: d.end,
+    units: [],
+    source: "all",
+    comparison: "previous_period",
+  });
+
+  const w = useWindsorData(filters);
+  const update = (next: Partial<FilterState>) => setFilters((prev) => ({ ...prev, ...next }));
+
   return (
-    <div className="max-w-5xl mx-auto px-6 py-12">
-      <Button asChild variant="ghost" size="sm" className="mb-6">
-        <Link to="/home"><ArrowLeft className="size-4 mr-1.5" /> Voltar</Link>
-      </Button>
-      <div className="bg-card gold-border rounded-lg p-12 text-center">
-        <div className="mx-auto w-14 h-14 rounded-md bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
-          <BarChart3 className="size-6" />
-        </div>
-        <h1 className="mt-6 font-display text-3xl text-primary">Dashboard de Marketing</h1>
-        <div className="mt-3 mx-auto h-px w-12 bg-primary/60" />
-        <p className="mt-6 text-sm text-muted-foreground max-w-md mx-auto">
-          Esta área receberá em breve seus indicadores de performance, campanhas e canais.
-        </p>
+    <div className="mx-auto max-w-[1400px] px-4 py-6 md:px-6">
+      <div className="no-print mb-4 flex items-center justify-between gap-3">
+        <Button asChild variant="ghost" size="sm">
+          <Link to="/home"><ArrowLeft className="size-4 mr-1.5" /> Voltar</Link>
+        </Button>
+        <span className="block text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+          Dashboard de Marketing
+        </span>
+      </div>
+
+      <div className="sticky top-0 z-30 mb-4 border-b border-border/40 bg-background/80 py-2.5 backdrop-blur-xl no-print">
+        <FilterBar value={filters} onChange={update} />
+      </div>
+
+      <div className="space-y-4">
+        {w.loading && <LoadingState />}
+        {!w.loading && w.error && (
+          <ErrorState message={String(w.error)} onRetry={() => window.location.reload()} />
+        )}
+        {!w.loading && !w.error && w.data && (
+          <MetaAdsTab data={w.data} previous={w.previousData} />
+        )}
       </div>
     </div>
   );
