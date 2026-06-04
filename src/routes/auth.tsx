@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import logo from "@/assets/logo.png";
+import logoAsset from "@/assets/apreenda-logo.png.asset.json";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -77,13 +77,33 @@ function AuthPage() {
     }
   };
 
+  const oauth = async (provider: "google" | "apple") => {
+    setBusy(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: { redirectTo: window.location.origin + "/home" },
+      });
+      if (error) throw error;
+    } catch (err: any) {
+      toast.error(err?.message ?? "Erro ao conectar.");
+      setBusy(false);
+    }
+  };
+
   return (
     <main className="min-h-screen flex items-center justify-center px-4 bg-background">
       <div className="w-full max-w-md">
-        <div className="text-center mb-10">
-          <h1 className="font-display text-5xl text-primary tracking-[0.15em]">APREENDA</h1>
-          <div className="mt-2 mx-auto h-px w-16 bg-primary/60" />
-          <p className="mt-3 text-sm uppercase tracking-[0.3em] text-muted-foreground">
+        <div className="text-center mb-8">
+          <img
+            src={logoAsset.url}
+            alt="Apreenda Digital"
+            width={160}
+            height={160}
+            className="mx-auto mb-3 h-32 w-32 object-contain"
+          />
+          <div className="mx-auto h-px w-16 bg-primary/60" />
+          <p className="mt-3 text-xs uppercase tracking-[0.3em] text-muted-foreground">
             Portal do Cliente
           </p>
         </div>
@@ -97,6 +117,36 @@ function AuthPage() {
             {mode === "signup" && "Criar conta"}
             {mode === "forgot" && "Recuperar senha"}
           </h2>
+
+          {mode !== "forgot" && (
+            <>
+              <div className="grid grid-cols-2 gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => oauth("google")}
+                  disabled={busy}
+                  className="gap-2"
+                >
+                  <GoogleIcon /> Google
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => oauth("apple")}
+                  disabled={busy}
+                  className="gap-2"
+                >
+                  <AppleIcon /> Apple
+                </Button>
+              </div>
+              <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+                <div className="h-px flex-1 bg-border" />
+                ou
+                <div className="h-px flex-1 bg-border" />
+              </div>
+            </>
+          )}
 
           {mode === "signup" && (
             <div className="space-y-2">
