@@ -35,6 +35,46 @@ export const getMarketingData = createServerFn({ method: "POST" })
     // Mock como base (Google Ads + fallback Meta + tenant demo).
     const base = generateMarketingData(data);
 
+    const mergeDaily = (live: { daily: { date: string; meta: number }[] }) => {
+      const byDate = new Map(base.dailySpend.map((d) => [d.date, { ...d, meta: 0 }]));
+      for (const d of live.daily) {
+        const cur = byDate.get(d.date) ?? { date: d.date, meta: 0, google: 0 };
+        cur.meta = d.meta;
+        byDate.set(d.date, cur);
+      }
+      return Array.from(byDate.values()).sort((a, b) => a.date.localeCompare(b.date));
+    };
+
+    // 1.5) Usuário com Facebook conectado (trial) → usa o token + conta DELE.
+    const { data: userMeta } = await (supabaseAdmin as any)
+      .from("meta_tokens")
+      .select("access_token, ad_account_id, expires_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (userMeta?.access_token && userMeta.ad_account_id) {
+      const expired = userMeta.expires_at && new Date(userMeta.expires_at).getTime() < Date.now();
+      if (!expired) {
+        try {
+          const live = await fetchMetaForUnit({
+            accountId: userMeta.ad_account_id,
+            start: data.start,
+            end: data.end,
+            unitName: "Sua conta",
+            token: userMeta.access_token,
+          });
+          return { ...base, meta: live.meta, dailySpend: mergeDaily(live) };
+        } catch (err) {
+          console.error("[meta-api trial] fallback:", err);
+          return {
+            ...base,
+            meta: base.meta && { ...base.meta, _fallback: true, _error: "Falha ao consultar sua conta Meta. Reconecte o Facebook." },
+          };
+        }
+      }
+    }
+
     // 2) Tenant demo → dados fictícios puros.
     const { data: tenant } = await supabaseAdmin
       .from("tenants")
@@ -73,18 +113,7 @@ export const getMarketingData = createServerFn({ method: "POST" })
         token,
       });
 
-      const dailyByDate = new Map(base.dailySpend.map((d) => [d.date, { ...d, meta: 0 }]));
-      for (const d of live.daily) {
-        const cur = dailyByDate.get(d.date) ?? { date: d.date, meta: 0, google: 0 };
-        cur.meta = d.meta;
-        dailyByDate.set(d.date, cur);
-      }
-
-      return {
-        ...base,
-        meta: live.meta,
-        dailySpend: Array.from(dailyByDate.values()).sort((a, b) => a.date.localeCompare(b.date)),
-      };
+      return { ...base, meta: live.meta, dailySpend: mergeDaily(live) };
     } catch (err) {
       console.error("[meta-api] fallback to mock:", err);
       return {

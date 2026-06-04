@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, redirect, Link, useNavigate } from "@tanstack/
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
-import { LogOut, Shield } from "lucide-react";
+import { LogOut, Shield, Clock } from "lucide-react";
 import { TenantBranding } from "@/components/TenantBranding";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -51,6 +51,8 @@ function AuthedLayout() {
           <div className="p-12 text-center text-muted-foreground">Perfil não encontrado.</div>
         ) : !profile.approved && !isAdmin ? (
           <PendingScreen email={profile.email} />
+        ) : isTrialExpired(profile.trial_ends_at) && !isAdmin ? (
+          <TrialExpiredScreen />
         ) : (
           <Outlet />
         )}
@@ -58,6 +60,35 @@ function AuthedLayout() {
       <footer className="py-6 text-center text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
         Apreenda Digital
       </footer>
+    </div>
+  );
+}
+
+export function isTrialExpired(trialEndsAt: string | null): boolean {
+  if (!trialEndsAt) return false;
+  return new Date(trialEndsAt).getTime() < Date.now();
+}
+
+function TrialExpiredScreen() {
+  return (
+    <div className="max-w-lg mx-auto px-6 py-24 text-center">
+      <div className="mx-auto w-16 h-16 rounded-full gold-border flex items-center justify-center mb-6">
+        <Clock className="size-7 text-primary" />
+      </div>
+      <h1 className="font-display text-3xl text-primary">Seu teste terminou</h1>
+      <div className="mt-3 mx-auto h-px w-12 bg-primary/60" />
+      <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
+        Esperamos que você tenha curtido ver suas campanhas em um só lugar.
+        Pra continuar com acesso completo ao seu painel, fale com a Apreenda.
+      </p>
+      <a
+        href="https://apreenda.com.br"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-8 inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90"
+      >
+        Quero continuar com a Apreenda
+      </a>
     </div>
   );
 }

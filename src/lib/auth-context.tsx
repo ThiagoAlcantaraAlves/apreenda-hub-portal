@@ -8,6 +8,8 @@ export type Profile = {
   full_name: string | null;
   approved: boolean;
   tenant_id: string | null;
+  trial_started_at: string | null;
+  trial_ends_at: string | null;
 };
 
 type AuthCtx = {
