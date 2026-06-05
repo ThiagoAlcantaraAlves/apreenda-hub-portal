@@ -192,3 +192,104 @@ export const googleSelectAssets = createServerFn({ method: "POST" })
       .eq("user_id", userId);
     return { ok: true };
   });
+
+/** Métricas (nível conta) do Google Ads da conta selecionada pelo usuário. */
+export const googleAdsMetrics = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) =>
+    z.object({ dateRange: z.string().default("LAST_7_DAYS") }).parse(i),
+  )
+  .handler(async ({ data, context }) => {
+    const { userId } = context as { userId: string };
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row } = await supabaseAdmin
+      .from("google_tokens")
+      .select("ads_customer_id")
+      .eq("user_id", userId)
+      .maybeSingle();
+    const cid = (row as any)?.ads_customer_id?.replace(/-/g, "");
+    if (!cid) throw new Error("Nenhuma conta Google Ads selecionada");
+    const devToken = process.env.GOOGLE_ADS_DEVELOPER_TOKEN;
+    if (!devToken) throw new Error("GOOGLE_ADS_DEVELOPER_TOKEN não configurado no servidor");
+
+    const token = await getValidGoogleToken(userId);
+    const query = `SELECT metrics.impressions, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.conversions_value, metrics.ctr, metrics.average_cpc FROM customer WHERE segments.date DURING ${data.dateRange}`;
+    const resp = await fetch(
+      `https://googleads.googleapis.com/v17/customers/${cid}/googleAds:searchStream`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "developer-token": devToken,
+          "login-customer-id": cid,
+        },
+        body: JSON.stringify({ query }),
+      },
+    );
+    const text = await resp.text();
+    if (!resp.ok) throw new Error(`Google Ads: HTTP ${resp.status} - ${text.substring(0, 200)}`);
+    const json = JSON.parse(text);
+    const m = json[0]?.results?.[0]?.metrics || {};
+    return {
+      impressions: Number(m.impressions || 0),
+      clicks: Number(m.clicks || 0),
+      spend: Number(m.costMicros || 0) / 1_000_000,
+      conversions: Number(m.conversions || 0),
+      revenue: Number(m.conversionsValue || 0),
+      ctr: Number(m.ctr || 0) * 100,
+      avgCpc: Number(m.averageCpc || 0) / 1_000_000,
+    };
+  });
+
+/** Relatório GA4 (métricas principais) da property selecionada pelo usuário. */
+export const googleAnalyticsReport = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) =>
+    z.object({ start: z.string().default("7daysAgo"), end: z.string().default("today") }).parse(i),
+  )
+  .handler(async ({ data, context }) => {
+    const { userId } = context as { userId: string };
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row } = await supabaseAdmin
+      .from("google_tokens")
+      .select("ga4_property_id")
+      .eq("user_id", userId)
+      .maybeSingle();
+    const prop = (row as any)?.ga4_property_id;
+    if (!prop) throw new Error("Nenhuma property GA4 selecionada");
+
+    const token = await getValidGoogleToken(userId);
+    const headers = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
+    const base = {
+      dateRanges: [{ startDate: data.start, endDate: data.end }],
+      metrics: [
+        { name: "sessions" }, { name: "totalUsers" }, { name: "newUsers" }, { name: "screenPageViews" },
+        { name: "bounceRate" }, { name: "averageSessionDuration" }, { name: "engagedSessions" }, { name: "engagementRate" },
+      ],
+    };
+    const url = `https://analyticsdata.googleapis.com/v1beta/properties/${prop}:runReport`;
+    const run = async (body: any) => {
+      const r = await fetch(url, { method: "POST", headers, body: JSON.stringify(body) });
+      const t = await r.text();
+      if (!r.ok) throw new Error(`GA4: HTTP ${r.status} - ${t.substring(0, 200)}`);
+      return JSON.parse(t);
+    };
+    let res: any;
+    try {
+      res = await run({ ...base, metrics: [...base.metrics, { name: "conversions" }] });
+    } catch {
+      res = await run(base);
+    }
+    const vals = res.rows?.[0]?.metricValues || [];
+    const hdrs = (res.metricHeaders || []).map((h: any) => h.name);
+    const nameMap: Record<string, string> = {
+      sessions: "sessions", totalUsers: "users", newUsers: "newUsers", screenPageViews: "pageviews",
+      bounceRate: "bounceRate", averageSessionDuration: "avgSessionDuration", conversions: "conversions",
+      engagedSessions: "engagedSessions", engagementRate: "engagementRate",
+    };
+    const out: Record<string, number> = {};
+    hdrs.forEach((api: string, i: number) => { out[nameMap[api] || api] = Number(vals[i]?.value || 0); });
+    if (out.conversions === undefined) out.conversions = 0;
+    return out;
+  });

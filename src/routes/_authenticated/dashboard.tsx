@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { subDays } from "date-fns";
 import { ArrowLeft, Facebook, Loader2, Check, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { FilterBar, type FilterState } from "@/components/marketing/FilterBar";
 import { MetaAdsTab } from "@/components/marketing/tabs/MetaAdsTab";
 import { LoadingState } from "@/components/marketing/shared/LoadingState";
@@ -15,7 +16,9 @@ import { useAuth } from "@/lib/auth-context";
 import { getMetaOAuthUrl } from "@/lib/fb-oauth";
 import { getGoogleOAuthUrl } from "@/lib/google-oauth";
 import { metaListAccounts, metaSelectAccount } from "@/lib/meta.functions";
-import { googleListAssets, googleSelectAssets } from "@/lib/google.functions";
+import {
+  googleListAssets, googleSelectAssets, googleAdsMetrics, googleAnalyticsReport,
+} from "@/lib/google.functions";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: DashboardPage,
@@ -33,59 +36,75 @@ function daysLeft(trialEndsAt: string | null): number | null {
   return Math.max(0, Math.ceil((new Date(trialEndsAt).getTime() - Date.now()) / 86400_000));
 }
 
+const money = (n: number) => `R$ ${n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const int = (n: number) => Math.round(n).toLocaleString("pt-BR");
+const pct = (n: number) => `${n.toFixed(2)}%`;
+
 function DashboardPage() {
   const { profile } = useAuth();
 
-  const { data: conn, isLoading: connLoading, refetch } = useQuery({
+  const { data: conn, isLoading, refetch } = useQuery({
     queryKey: ["connections", profile?.id],
     queryFn: async () => {
       const [{ data: meta }, { data: google }, { data: tenant }] = await Promise.all([
         (supabase as any).from("meta_tokens").select("ad_account_id").eq("user_id", profile!.id).maybeSingle(),
-        (supabase as any)
-          .from("google_tokens")
-          .select("ga4_property_id, ads_customer_id")
-          .eq("user_id", profile!.id)
-          .maybeSingle(),
+        (supabase as any).from("google_tokens").select("ga4_property_id, ads_customer_id").eq("user_id", profile!.id).maybeSingle(),
         supabase.from("tenants").select("status").eq("id", profile!.tenant_id!).maybeSingle(),
       ]);
       return {
         metaConnected: !!meta,
         metaAccountSelected: !!meta?.ad_account_id,
         googleConnected: !!google,
-        googleAssetSelected: !!(google?.ga4_property_id || google?.ads_customer_id),
+        googleHasGa4: !!google?.ga4_property_id,
+        googleHasAds: !!google?.ads_customer_id,
         managed: (tenant as any)?.status === "active",
       };
     },
     enabled: !!profile?.id,
   });
 
-  if (connLoading || !conn) {
-    return <Shell><LoadingState /></Shell>;
-  }
+  if (isLoading || !conn) return <Shell><LoadingState /></Shell>;
 
-  // Cliente gerenciado → dashboard direto.
-  // Trial: precisa conectar PELO MENOS uma fonte (Meta ou Google) e selecionar conta/asset.
-  const anyConnected = conn.metaConnected || conn.googleConnected;
-  const needsAccountPicker =
-    (conn.metaConnected && !conn.metaAccountSelected) ||
-    (conn.googleConnected && !conn.googleAssetSelected);
-
-  if (!conn.managed && !anyConnected) {
-    return <Shell><ConnectAccounts /></Shell>;
-  }
-  if (!conn.managed && needsAccountPicker) {
-    return (
-      <Shell>
-        {conn.metaConnected && !conn.metaAccountSelected && <AccountPicker onDone={() => refetch()} />}
-        {conn.googleConnected && !conn.googleAssetSelected && <GooglePicker onDone={() => refetch()} />}
-      </Shell>
-    );
-  }
+  const anyConnected = conn.metaConnected || conn.googleConnected || conn.managed;
+  if (!anyConnected) return <Shell><ConnectAccounts /></Shell>;
 
   return (
     <Shell>
       {!conn.managed && <TrialBanner days={daysLeft(profile?.trial_ends_at ?? null)} />}
-      <DashboardData />
+      <Tabs defaultValue={conn.googleConnected && !conn.metaConnected ? "google" : "meta"}>
+        <TabsList className="mb-4">
+          <TabsTrigger value="meta"><Facebook className="size-4 mr-1.5" /> Meta Ads</TabsTrigger>
+          <TabsTrigger value="google"><BarChart3 className="size-4 mr-1.5" /> Google</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="meta">
+          {conn.managed || (conn.metaConnected && conn.metaAccountSelected) ? (
+            <MetaSection />
+          ) : conn.metaConnected && !conn.metaAccountSelected ? (
+            <AccountPicker onDone={() => refetch()} />
+          ) : (
+            <ConnectCard
+              kind="meta"
+              title="Conecte o Meta Ads"
+              desc="Facebook e Instagram Ads — veja gasto, alcance, CTR, conversas e ROAS."
+            />
+          )}
+        </TabsContent>
+
+        <TabsContent value="google">
+          {conn.googleConnected && (conn.googleHasGa4 || conn.googleHasAds) ? (
+            <GoogleSection hasAds={conn.googleHasAds} hasGa4={conn.googleHasGa4} />
+          ) : conn.googleConnected ? (
+            <GooglePicker onDone={() => refetch()} />
+          ) : (
+            <ConnectCard
+              kind="google"
+              title="Conecte o Google"
+              desc="Google Ads + Google Analytics (GA4) — campanhas, sessões e conversões."
+            />
+          )}
+        </TabsContent>
+      </Tabs>
     </Shell>
   );
 }
@@ -120,14 +139,10 @@ function TrialBanner({ days }: { days: number | null }) {
   );
 }
 
-function DashboardData() {
+function MetaSection() {
   const d = defaultDates();
   const [filters, setFilters] = useState<FilterState>({
-    start: d.start,
-    end: d.end,
-    units: [],
-    source: "all",
-    comparison: "previous_period",
+    start: d.start, end: d.end, units: [], source: "all", comparison: "previous_period",
   });
   const w = useWindsorData(filters);
   const update = (next: Partial<FilterState>) => setFilters((prev) => ({ ...prev, ...next }));
@@ -139,14 +154,98 @@ function DashboardData() {
       </div>
       <div className="space-y-4">
         {w.loading && <LoadingState />}
-        {!w.loading && w.error && (
-          <ErrorState message={String(w.error)} onRetry={() => window.location.reload()} />
-        )}
-        {!w.loading && !w.error && w.data && (
-          <MetaAdsTab data={w.data} previous={w.previousData} />
-        )}
+        {!w.loading && w.error && <ErrorState message={String(w.error)} onRetry={() => window.location.reload()} />}
+        {!w.loading && !w.error && w.data && <MetaAdsTab data={w.data} previous={w.previousData} />}
       </div>
     </>
+  );
+}
+
+function MiniCard({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-lg gold-border bg-card p-4">
+      <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">{label}</p>
+      <p className="mt-1 font-display text-2xl text-foreground">{value}</p>
+    </div>
+  );
+}
+
+function GoogleSection({ hasAds, hasGa4 }: { hasAds: boolean; hasGa4: boolean }) {
+  const adsFn = useServerFn(googleAdsMetrics);
+  const gaFn = useServerFn(googleAnalyticsReport);
+
+  const ads = useQuery({
+    queryKey: ["google-ads-metrics"],
+    queryFn: () => adsFn({ data: { dateRange: "LAST_7_DAYS" } }) as Promise<any>,
+    enabled: hasAds,
+  });
+  const ga = useQuery({
+    queryKey: ["google-ga4-report"],
+    queryFn: () => gaFn({ data: { start: "7daysAgo", end: "today" } }) as Promise<any>,
+    enabled: hasGa4,
+  });
+
+  return (
+    <div className="space-y-8">
+      <p className="text-xs text-muted-foreground no-print">Últimos 7 dias</p>
+
+      {hasAds && (
+        <section>
+          <h2 className="font-display text-xl text-primary mb-3">Google Ads</h2>
+          {ads.isLoading && <div className="flex py-8 justify-center"><Loader2 className="size-6 animate-spin text-primary" /></div>}
+          {ads.error && <ErrorState message={String((ads.error as Error).message)} onRetry={() => ads.refetch()} />}
+          {ads.data && (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              <MiniCard label="Investimento" value={money(ads.data.spend)} />
+              <MiniCard label="Impressões" value={int(ads.data.impressions)} />
+              <MiniCard label="Cliques" value={int(ads.data.clicks)} />
+              <MiniCard label="CTR" value={pct(ads.data.ctr)} />
+              <MiniCard label="CPC médio" value={money(ads.data.avgCpc)} />
+              <MiniCard label="Conversões" value={int(ads.data.conversions)} />
+            </div>
+          )}
+        </section>
+      )}
+
+      {hasGa4 && (
+        <section>
+          <h2 className="font-display text-xl text-primary mb-3">Google Analytics (GA4)</h2>
+          {ga.isLoading && <div className="flex py-8 justify-center"><Loader2 className="size-6 animate-spin text-primary" /></div>}
+          {ga.error && <ErrorState message={String((ga.error as Error).message)} onRetry={() => ga.refetch()} />}
+          {ga.data && (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              <MiniCard label="Sessões" value={int(ga.data.sessions || 0)} />
+              <MiniCard label="Usuários" value={int(ga.data.users || 0)} />
+              <MiniCard label="Novos usuários" value={int(ga.data.newUsers || 0)} />
+              <MiniCard label="Pageviews" value={int(ga.data.pageviews || 0)} />
+              <MiniCard label="Engajamento" value={pct((ga.data.engagementRate || 0) * 100)} />
+              <MiniCard label="Conversões" value={int(ga.data.conversions || 0)} />
+            </div>
+          )}
+        </section>
+      )}
+    </div>
+  );
+}
+
+function ConnectCard({ kind, title, desc }: { kind: "meta" | "google"; title: string; desc: string }) {
+  const Icon = kind === "meta" ? Facebook : BarChart3;
+  const href = kind === "meta" ? getMetaOAuthUrl() : getGoogleOAuthUrl();
+  const label = kind === "meta" ? "Conectar Meta" : "Conectar Google";
+  return (
+    <div className="max-w-md mx-auto py-14 text-center">
+      <div className="mx-auto w-14 h-14 rounded-md bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
+        <Icon className="size-6" />
+      </div>
+      <h2 className="mt-5 font-display text-2xl text-primary">{title}</h2>
+      <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{desc}</p>
+      <a
+        href={href}
+        className="mt-7 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90"
+      >
+        <Icon className="size-4" /> {label}
+      </a>
+    </div>
   );
 }
 
@@ -161,7 +260,6 @@ function ConnectAccounts() {
           gastos e resultados num só painel. Seu teste grátis de 30 dias começa agora.
         </p>
       </div>
-
       <div className="mt-10 grid gap-4 md:grid-cols-2">
         <div className="rounded-lg gold-border bg-card p-6 text-center">
           <div className="mx-auto w-12 h-12 rounded-md bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
@@ -169,24 +267,17 @@ function ConnectAccounts() {
           </div>
           <h2 className="mt-4 font-display text-lg text-primary">Meta Ads</h2>
           <p className="mt-2 text-xs text-muted-foreground">Facebook e Instagram Ads</p>
-          <a
-            href={getMetaOAuthUrl()}
-            className="mt-5 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
-          >
+          <a href={getMetaOAuthUrl()} className="mt-5 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90">
             <Facebook className="size-4" /> Conectar Meta
           </a>
         </div>
-
         <div className="rounded-lg gold-border bg-card p-6 text-center">
           <div className="mx-auto w-12 h-12 rounded-md bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
             <BarChart3 className="size-5" />
           </div>
           <h2 className="mt-4 font-display text-lg text-primary">Google</h2>
           <p className="mt-2 text-xs text-muted-foreground">GA4 + Google Ads</p>
-          <a
-            href={getGoogleOAuthUrl()}
-            className="mt-5 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
-          >
+          <a href={getGoogleOAuthUrl()} className="mt-5 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90">
             <BarChart3 className="size-4" /> Conectar Google
           </a>
         </div>
@@ -235,7 +326,7 @@ function AccountPicker({ onDone }: { onDone: () => void }) {
               <span className="block text-sm text-foreground">{a.name}</span>
               <span className="block text-xs text-muted-foreground font-mono">{a.id}{a.currency ? ` · ${a.currency}` : ""}</span>
             </span>
-            {saving === a.id ? <Loader2 className="size-4 animate-spin text-primary" /> : <Check className="size-4 text-primary opacity-0 group-hover:opacity-100" />}
+            {saving === a.id ? <Loader2 className="size-4 animate-spin text-primary" /> : <Check className="size-4 text-primary opacity-0" />}
           </button>
         ))}
         {data && data.accounts?.length === 0 && (
