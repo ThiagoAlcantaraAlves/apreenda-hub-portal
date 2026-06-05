@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      google_tokens: {
+        Row: {
+          access_token: string
+          ads_customer_id: string | null
+          ads_customer_name: string | null
+          created_at: string
+          expires_at: string
+          ga4_property_id: string | null
+          ga4_property_name: string | null
+          id: string
+          refresh_token: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_token: string
+          ads_customer_id?: string | null
+          ads_customer_name?: string | null
+          created_at?: string
+          expires_at: string
+          ga4_property_id?: string | null
+          ga4_property_name?: string | null
+          id?: string
+          refresh_token: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_token?: string
+          ads_customer_id?: string | null
+          ads_customer_name?: string | null
+          created_at?: string
+          expires_at?: string
+          ga4_property_id?: string | null
+          ga4_property_name?: string | null
+          id?: string
+          refresh_token?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           approved: boolean
