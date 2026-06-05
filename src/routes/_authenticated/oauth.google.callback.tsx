@@ -1,17 +1,17 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
-import { metaExchangeCode } from "@/lib/meta.functions";
-import { metaCallbackUri } from "@/lib/fb-oauth";
+import { googleExchangeCode } from "@/lib/google.functions";
+import { googleCallbackUri } from "@/lib/google-oauth";
 import { Loader2 } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/meta-callback")({
-  component: MetaCallbackPage,
+export const Route = createFileRoute("/_authenticated/oauth/google/callback")({
+  component: GoogleCallbackPage,
 });
 
-function MetaCallbackPage() {
+function GoogleCallbackPage() {
   const navigate = useNavigate();
-  const exchange = useServerFn(metaExchangeCode);
+  const exchange = useServerFn(googleExchangeCode);
   const [error, setError] = useState<string | null>(null);
   const ran = useRef(false);
 
@@ -21,10 +21,10 @@ function MetaCallbackPage() {
 
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
-    const fbError = params.get("error_description") || params.get("error");
+    const gError = params.get("error_description") || params.get("error");
 
-    if (fbError) {
-      setError(decodeURIComponent(fbError));
+    if (gError) {
+      setError(decodeURIComponent(gError));
       return;
     }
     if (!code) {
@@ -32,9 +32,9 @@ function MetaCallbackPage() {
       return;
     }
 
-    exchange({ data: { code, redirectUri: metaCallbackUri() } })
+    exchange({ data: { code, redirectUri: googleCallbackUri() } })
       .then(() => navigate({ to: "/dashboard", replace: true }))
-      .catch((e) => setError(e?.message || "Falha ao conectar com o Facebook."));
+      .catch((e) => setError(e?.message || "Falha ao conectar com o Google."));
   }, [exchange, navigate]);
 
   return (
@@ -53,7 +53,7 @@ function MetaCallbackPage() {
       ) : (
         <>
           <Loader2 className="mx-auto size-8 animate-spin text-primary" />
-          <p className="mt-4 text-sm text-muted-foreground">Conectando sua conta do Facebook…</p>
+          <p className="mt-4 text-sm text-muted-foreground">Conectando sua conta do Google…</p>
         </>
       )}
     </div>

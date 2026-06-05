@@ -13,10 +13,11 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedMetaCallbackRouteImport } from './routes/_authenticated/meta-callback'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedOauthMetaCallbackRouteImport } from './routes/_authenticated/oauth.meta.callback'
+import { Route as AuthenticatedOauthGoogleCallbackRouteImport } from './routes/_authenticated/oauth.google.callback'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -37,12 +38,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedMetaCallbackRoute =
-  AuthenticatedMetaCallbackRouteImport.update({
-    id: '/meta-callback',
-    path: '/meta-callback',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -58,6 +53,18 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOauthMetaCallbackRoute =
+  AuthenticatedOauthMetaCallbackRouteImport.update({
+    id: '/oauth/meta/callback',
+    path: '/oauth/meta/callback',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOauthGoogleCallbackRoute =
+  AuthenticatedOauthGoogleCallbackRouteImport.update({
+    id: '/oauth/google/callback',
+    path: '/oauth/google/callback',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -66,7 +73,8 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/home': typeof AuthenticatedHomeRoute
-  '/meta-callback': typeof AuthenticatedMetaCallbackRoute
+  '/oauth/google/callback': typeof AuthenticatedOauthGoogleCallbackRoute
+  '/oauth/meta/callback': typeof AuthenticatedOauthMetaCallbackRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,7 +83,8 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/home': typeof AuthenticatedHomeRoute
-  '/meta-callback': typeof AuthenticatedMetaCallbackRoute
+  '/oauth/google/callback': typeof AuthenticatedOauthGoogleCallbackRoute
+  '/oauth/meta/callback': typeof AuthenticatedOauthMetaCallbackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,7 +95,8 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
-  '/_authenticated/meta-callback': typeof AuthenticatedMetaCallbackRoute
+  '/_authenticated/oauth/google/callback': typeof AuthenticatedOauthGoogleCallbackRoute
+  '/_authenticated/oauth/meta/callback': typeof AuthenticatedOauthMetaCallbackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -97,7 +107,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/home'
-    | '/meta-callback'
+    | '/oauth/google/callback'
+    | '/oauth/meta/callback'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -106,7 +117,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/home'
-    | '/meta-callback'
+    | '/oauth/google/callback'
+    | '/oauth/meta/callback'
   id:
     | '__root__'
     | '/'
@@ -116,7 +128,8 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/_authenticated/home'
-    | '/_authenticated/meta-callback'
+    | '/_authenticated/oauth/google/callback'
+    | '/_authenticated/oauth/meta/callback'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -156,13 +169,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/meta-callback': {
-      id: '/_authenticated/meta-callback'
-      path: '/meta-callback'
-      fullPath: '/meta-callback'
-      preLoaderRoute: typeof AuthenticatedMetaCallbackRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/home': {
       id: '/_authenticated/home'
       path: '/home'
@@ -184,6 +190,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/oauth/meta/callback': {
+      id: '/_authenticated/oauth/meta/callback'
+      path: '/oauth/meta/callback'
+      fullPath: '/oauth/meta/callback'
+      preLoaderRoute: typeof AuthenticatedOauthMetaCallbackRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/oauth/google/callback': {
+      id: '/_authenticated/oauth/google/callback'
+      path: '/oauth/google/callback'
+      fullPath: '/oauth/google/callback'
+      preLoaderRoute: typeof AuthenticatedOauthGoogleCallbackRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -191,14 +211,16 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
-  AuthenticatedMetaCallbackRoute: typeof AuthenticatedMetaCallbackRoute
+  AuthenticatedOauthGoogleCallbackRoute: typeof AuthenticatedOauthGoogleCallbackRoute
+  AuthenticatedOauthMetaCallbackRoute: typeof AuthenticatedOauthMetaCallbackRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
-  AuthenticatedMetaCallbackRoute: AuthenticatedMetaCallbackRoute,
+  AuthenticatedOauthGoogleCallbackRoute: AuthenticatedOauthGoogleCallbackRoute,
+  AuthenticatedOauthMetaCallbackRoute: AuthenticatedOauthMetaCallbackRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -213,13 +235,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
