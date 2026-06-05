@@ -56,6 +56,39 @@ export type Database = {
         }
         Relationships: []
       }
+      meta_tokens: {
+        Row: {
+          access_token: string
+          ad_account_id: string | null
+          ad_account_name: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_token: string
+          ad_account_id?: string | null
+          ad_account_name?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_token?: string
+          ad_account_id?: string | null
+          ad_account_name?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           approved: boolean
@@ -64,6 +97,8 @@ export type Database = {
           full_name: string | null
           id: string
           tenant_id: string | null
+          trial_ends_at: string | null
+          trial_started_at: string | null
         }
         Insert: {
           approved?: boolean
@@ -72,6 +107,8 @@ export type Database = {
           full_name?: string | null
           id: string
           tenant_id?: string | null
+          trial_ends_at?: string | null
+          trial_started_at?: string | null
         }
         Update: {
           approved?: boolean
@@ -80,6 +117,8 @@ export type Database = {
           full_name?: string | null
           id?: string
           tenant_id?: string | null
+          trial_ends_at?: string | null
+          trial_started_at?: string | null
         }
         Relationships: [
           {
