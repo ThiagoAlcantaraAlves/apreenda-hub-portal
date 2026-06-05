@@ -1,6 +1,6 @@
 // Google OAuth (GA4 + Google Ads). Client ID público.
 export const GOOGLE_CLIENT_ID =
-  "144948979755-placeholder.apps.googleusercontent.com";
+  "144948979755-9dejqp5jtpmcdlv630gvthfsrll8hs84.apps.googleusercontent.com";
 
 const GOOGLE_SCOPES = [
   "openid",
