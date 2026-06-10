@@ -197,7 +197,26 @@ export const googleSelectAssets = createServerFn({ method: "POST" })
 export const googleAdsMetrics = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: unknown) =>
-    z.object({ dateRange: z.string().default("LAST_7_DAYS") }).parse(i),
+    z
+      .object({
+        dateRange: z
+          .enum([
+            "TODAY",
+            "YESTERDAY",
+            "LAST_7_DAYS",
+            "LAST_14_DAYS",
+            "LAST_30_DAYS",
+            "LAST_90_DAYS",
+            "THIS_MONTH",
+            "LAST_MONTH",
+            "THIS_WEEK_SUN_TODAY",
+            "THIS_WEEK_MON_TODAY",
+            "LAST_WEEK_SUN_SAT",
+            "LAST_WEEK_MON_SUN",
+          ])
+          .default("LAST_7_DAYS"),
+      })
+      .parse(i),
   )
   .handler(async ({ data, context }) => {
     const { userId } = context as { userId: string };
