@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 import { googleExchangeCode } from "@/lib/google.functions";
-import { googleCallbackUri } from "@/lib/google-oauth";
+import { googleCallbackUri, consumeGoogleOAuthState } from "@/lib/google-oauth";
 import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/oauth/google/callback")({
@@ -21,10 +21,15 @@ function GoogleCallbackPage() {
 
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
+    const state = params.get("state");
     const gError = params.get("error_description") || params.get("error");
 
     if (gError) {
       setError(decodeURIComponent(gError));
+      return;
+    }
+    if (!consumeGoogleOAuthState(state)) {
+      setError("Falha de verificação de segurança (state inválido). Tente conectar novamente.");
       return;
     }
     if (!code) {
