@@ -1,1 +1,12 @@
 project_id = "yiqrjjiwkzszcvlxzups"
+
+# Webhooks chamados por serviços externos (sem JWT do usuário)
+[functions.disparos-whatsapp-webhook]
+  verify_jwt = false
+
+[functions.asaas-webhook]
+  verify_jwt = false
+
+# Cron interno de campanhas agendadas (chamado por scheduler / service role)
+[functions.disparos-process-scheduled-campaigns]
+  verify_jwt = false

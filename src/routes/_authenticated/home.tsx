@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Briefcase, Users, Share2, ExternalLink, ArrowRight } from "lucide-react";
+import { BarChart3, Briefcase, Users, Share2, ExternalLink, ArrowRight, Send } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
@@ -97,6 +97,28 @@ function HomePage() {
             })}
           </div>
         )}
+      </section>
+
+      <section className="mt-12">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Ferramentas</p>
+        <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <article className="group bg-card gold-border rounded-lg p-6 flex flex-col transition hover:border-primary/70 hover:shadow-[0_0_30px_-12px_var(--gold)]">
+            <div className="w-11 h-11 rounded-md bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
+              <Send className="size-5" />
+            </div>
+            <h3 className="mt-5 font-display text-xl text-foreground">Disparos WhatsApp</h3>
+            <p className="mt-2 text-sm text-muted-foreground flex-1">
+              Campanhas e mensagens em massa no WhatsApp, com templates aprovados, agendamento e relatórios.
+            </p>
+            <Button
+              onClick={() => navigate({ to: "/tool/disparos" })}
+              className="mt-6 w-full justify-between"
+              variant="default"
+            >
+              Abrir <ArrowRight className="size-4" />
+            </Button>
+          </article>
+        </div>
       </section>
     </div>
   );

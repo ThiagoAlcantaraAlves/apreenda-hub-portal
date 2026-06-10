@@ -16,11 +16,25 @@ import { Route as ExclusaoDeDadosRouteImport } from './routes/exclusao-de-dados'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedPlanosRouteImport } from './routes/_authenticated/planos'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedToolDisparosRouteImport } from './routes/_authenticated/tool.disparos'
+import { Route as AuthenticatedToolDisparosIndexRouteImport } from './routes/_authenticated/tool.disparos.index'
+import { Route as AuthenticatedToolDisparosSobreRouteImport } from './routes/_authenticated/tool.disparos_.sobre'
+import { Route as AuthenticatedToolDisparosManualRouteImport } from './routes/_authenticated/tool.disparos_.manual'
+import { Route as AuthenticatedToolDisparosHistoricoRouteImport } from './routes/_authenticated/tool.disparos.historico'
+import { Route as AuthenticatedToolDisparosDispararRouteImport } from './routes/_authenticated/tool.disparos.disparar'
+import { Route as AuthenticatedToolDisparosContatosRouteImport } from './routes/_authenticated/tool.disparos.contatos'
+import { Route as AuthenticatedToolDisparosConfiguracoesRouteImport } from './routes/_authenticated/tool.disparos.configuracoes'
+import { Route as AuthenticatedToolDisparosClientesRouteImport } from './routes/_authenticated/tool.disparos.clientes'
+import { Route as AuthenticatedToolDisparosAnalyticsRouteImport } from './routes/_authenticated/tool.disparos.analytics'
+import { Route as AuthenticatedToolDisparosAgendamentosRouteImport } from './routes/_authenticated/tool.disparos.agendamentos'
 import { Route as AuthenticatedOauthMetaCallbackRouteImport } from './routes/_authenticated/oauth.meta.callback'
 import { Route as AuthenticatedOauthGoogleCallbackRouteImport } from './routes/_authenticated/oauth.google.callback'
+import { Route as AuthenticatedToolDisparosTemplatesIndexRouteImport } from './routes/_authenticated/tool.disparos.templates.index'
+import { Route as AuthenticatedToolDisparosTemplatesNovoRouteImport } from './routes/_authenticated/tool.disparos.templates.novo'
 
 const TermosRoute = TermosRouteImport.update({
   id: '/termos',
@@ -56,6 +70,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedPlanosRoute = AuthenticatedPlanosRouteImport.update({
+  id: '/planos',
+  path: '/planos',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -71,6 +90,72 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedToolDisparosRoute =
+  AuthenticatedToolDisparosRouteImport.update({
+    id: '/tool/disparos',
+    path: '/tool/disparos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedToolDisparosIndexRoute =
+  AuthenticatedToolDisparosIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedToolDisparosRoute,
+  } as any)
+const AuthenticatedToolDisparosSobreRoute =
+  AuthenticatedToolDisparosSobreRouteImport.update({
+    id: '/tool/disparos_/sobre',
+    path: '/tool/disparos/sobre',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedToolDisparosManualRoute =
+  AuthenticatedToolDisparosManualRouteImport.update({
+    id: '/tool/disparos_/manual',
+    path: '/tool/disparos/manual',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedToolDisparosHistoricoRoute =
+  AuthenticatedToolDisparosHistoricoRouteImport.update({
+    id: '/historico',
+    path: '/historico',
+    getParentRoute: () => AuthenticatedToolDisparosRoute,
+  } as any)
+const AuthenticatedToolDisparosDispararRoute =
+  AuthenticatedToolDisparosDispararRouteImport.update({
+    id: '/disparar',
+    path: '/disparar',
+    getParentRoute: () => AuthenticatedToolDisparosRoute,
+  } as any)
+const AuthenticatedToolDisparosContatosRoute =
+  AuthenticatedToolDisparosContatosRouteImport.update({
+    id: '/contatos',
+    path: '/contatos',
+    getParentRoute: () => AuthenticatedToolDisparosRoute,
+  } as any)
+const AuthenticatedToolDisparosConfiguracoesRoute =
+  AuthenticatedToolDisparosConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedToolDisparosRoute,
+  } as any)
+const AuthenticatedToolDisparosClientesRoute =
+  AuthenticatedToolDisparosClientesRouteImport.update({
+    id: '/clientes',
+    path: '/clientes',
+    getParentRoute: () => AuthenticatedToolDisparosRoute,
+  } as any)
+const AuthenticatedToolDisparosAnalyticsRoute =
+  AuthenticatedToolDisparosAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => AuthenticatedToolDisparosRoute,
+  } as any)
+const AuthenticatedToolDisparosAgendamentosRoute =
+  AuthenticatedToolDisparosAgendamentosRouteImport.update({
+    id: '/agendamentos',
+    path: '/agendamentos',
+    getParentRoute: () => AuthenticatedToolDisparosRoute,
+  } as any)
 const AuthenticatedOauthMetaCallbackRoute =
   AuthenticatedOauthMetaCallbackRouteImport.update({
     id: '/oauth/meta/callback',
@@ -83,6 +168,18 @@ const AuthenticatedOauthGoogleCallbackRoute =
     path: '/oauth/google/callback',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedToolDisparosTemplatesIndexRoute =
+  AuthenticatedToolDisparosTemplatesIndexRouteImport.update({
+    id: '/templates/',
+    path: '/templates/',
+    getParentRoute: () => AuthenticatedToolDisparosRoute,
+  } as any)
+const AuthenticatedToolDisparosTemplatesNovoRoute =
+  AuthenticatedToolDisparosTemplatesNovoRouteImport.update({
+    id: '/templates/novo',
+    path: '/templates/novo',
+    getParentRoute: () => AuthenticatedToolDisparosRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -94,8 +191,22 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/home': typeof AuthenticatedHomeRoute
+  '/planos': typeof AuthenticatedPlanosRoute
+  '/tool/disparos': typeof AuthenticatedToolDisparosRouteWithChildren
   '/oauth/google/callback': typeof AuthenticatedOauthGoogleCallbackRoute
   '/oauth/meta/callback': typeof AuthenticatedOauthMetaCallbackRoute
+  '/tool/disparos/agendamentos': typeof AuthenticatedToolDisparosAgendamentosRoute
+  '/tool/disparos/analytics': typeof AuthenticatedToolDisparosAnalyticsRoute
+  '/tool/disparos/clientes': typeof AuthenticatedToolDisparosClientesRoute
+  '/tool/disparos/configuracoes': typeof AuthenticatedToolDisparosConfiguracoesRoute
+  '/tool/disparos/contatos': typeof AuthenticatedToolDisparosContatosRoute
+  '/tool/disparos/disparar': typeof AuthenticatedToolDisparosDispararRoute
+  '/tool/disparos/historico': typeof AuthenticatedToolDisparosHistoricoRoute
+  '/tool/disparos/manual': typeof AuthenticatedToolDisparosManualRoute
+  '/tool/disparos/sobre': typeof AuthenticatedToolDisparosSobreRoute
+  '/tool/disparos/': typeof AuthenticatedToolDisparosIndexRoute
+  '/tool/disparos/templates/novo': typeof AuthenticatedToolDisparosTemplatesNovoRoute
+  '/tool/disparos/templates/': typeof AuthenticatedToolDisparosTemplatesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -107,8 +218,21 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/home': typeof AuthenticatedHomeRoute
+  '/planos': typeof AuthenticatedPlanosRoute
   '/oauth/google/callback': typeof AuthenticatedOauthGoogleCallbackRoute
   '/oauth/meta/callback': typeof AuthenticatedOauthMetaCallbackRoute
+  '/tool/disparos/agendamentos': typeof AuthenticatedToolDisparosAgendamentosRoute
+  '/tool/disparos/analytics': typeof AuthenticatedToolDisparosAnalyticsRoute
+  '/tool/disparos/clientes': typeof AuthenticatedToolDisparosClientesRoute
+  '/tool/disparos/configuracoes': typeof AuthenticatedToolDisparosConfiguracoesRoute
+  '/tool/disparos/contatos': typeof AuthenticatedToolDisparosContatosRoute
+  '/tool/disparos/disparar': typeof AuthenticatedToolDisparosDispararRoute
+  '/tool/disparos/historico': typeof AuthenticatedToolDisparosHistoricoRoute
+  '/tool/disparos/manual': typeof AuthenticatedToolDisparosManualRoute
+  '/tool/disparos/sobre': typeof AuthenticatedToolDisparosSobreRoute
+  '/tool/disparos': typeof AuthenticatedToolDisparosIndexRoute
+  '/tool/disparos/templates/novo': typeof AuthenticatedToolDisparosTemplatesNovoRoute
+  '/tool/disparos/templates': typeof AuthenticatedToolDisparosTemplatesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -122,8 +246,22 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
+  '/_authenticated/planos': typeof AuthenticatedPlanosRoute
+  '/_authenticated/tool/disparos': typeof AuthenticatedToolDisparosRouteWithChildren
   '/_authenticated/oauth/google/callback': typeof AuthenticatedOauthGoogleCallbackRoute
   '/_authenticated/oauth/meta/callback': typeof AuthenticatedOauthMetaCallbackRoute
+  '/_authenticated/tool/disparos/agendamentos': typeof AuthenticatedToolDisparosAgendamentosRoute
+  '/_authenticated/tool/disparos/analytics': typeof AuthenticatedToolDisparosAnalyticsRoute
+  '/_authenticated/tool/disparos/clientes': typeof AuthenticatedToolDisparosClientesRoute
+  '/_authenticated/tool/disparos/configuracoes': typeof AuthenticatedToolDisparosConfiguracoesRoute
+  '/_authenticated/tool/disparos/contatos': typeof AuthenticatedToolDisparosContatosRoute
+  '/_authenticated/tool/disparos/disparar': typeof AuthenticatedToolDisparosDispararRoute
+  '/_authenticated/tool/disparos/historico': typeof AuthenticatedToolDisparosHistoricoRoute
+  '/_authenticated/tool/disparos_/manual': typeof AuthenticatedToolDisparosManualRoute
+  '/_authenticated/tool/disparos_/sobre': typeof AuthenticatedToolDisparosSobreRoute
+  '/_authenticated/tool/disparos/': typeof AuthenticatedToolDisparosIndexRoute
+  '/_authenticated/tool/disparos/templates/novo': typeof AuthenticatedToolDisparosTemplatesNovoRoute
+  '/_authenticated/tool/disparos/templates/': typeof AuthenticatedToolDisparosTemplatesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -137,8 +275,22 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/home'
+    | '/planos'
+    | '/tool/disparos'
     | '/oauth/google/callback'
     | '/oauth/meta/callback'
+    | '/tool/disparos/agendamentos'
+    | '/tool/disparos/analytics'
+    | '/tool/disparos/clientes'
+    | '/tool/disparos/configuracoes'
+    | '/tool/disparos/contatos'
+    | '/tool/disparos/disparar'
+    | '/tool/disparos/historico'
+    | '/tool/disparos/manual'
+    | '/tool/disparos/sobre'
+    | '/tool/disparos/'
+    | '/tool/disparos/templates/novo'
+    | '/tool/disparos/templates/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -150,8 +302,21 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/home'
+    | '/planos'
     | '/oauth/google/callback'
     | '/oauth/meta/callback'
+    | '/tool/disparos/agendamentos'
+    | '/tool/disparos/analytics'
+    | '/tool/disparos/clientes'
+    | '/tool/disparos/configuracoes'
+    | '/tool/disparos/contatos'
+    | '/tool/disparos/disparar'
+    | '/tool/disparos/historico'
+    | '/tool/disparos/manual'
+    | '/tool/disparos/sobre'
+    | '/tool/disparos'
+    | '/tool/disparos/templates/novo'
+    | '/tool/disparos/templates'
   id:
     | '__root__'
     | '/'
@@ -164,8 +329,22 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/_authenticated/home'
+    | '/_authenticated/planos'
+    | '/_authenticated/tool/disparos'
     | '/_authenticated/oauth/google/callback'
     | '/_authenticated/oauth/meta/callback'
+    | '/_authenticated/tool/disparos/agendamentos'
+    | '/_authenticated/tool/disparos/analytics'
+    | '/_authenticated/tool/disparos/clientes'
+    | '/_authenticated/tool/disparos/configuracoes'
+    | '/_authenticated/tool/disparos/contatos'
+    | '/_authenticated/tool/disparos/disparar'
+    | '/_authenticated/tool/disparos/historico'
+    | '/_authenticated/tool/disparos_/manual'
+    | '/_authenticated/tool/disparos_/sobre'
+    | '/_authenticated/tool/disparos/'
+    | '/_authenticated/tool/disparos/templates/novo'
+    | '/_authenticated/tool/disparos/templates/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -229,6 +408,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/planos': {
+      id: '/_authenticated/planos'
+      path: '/planos'
+      fullPath: '/planos'
+      preLoaderRoute: typeof AuthenticatedPlanosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/home': {
       id: '/_authenticated/home'
       path: '/home'
@@ -250,6 +436,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/tool/disparos': {
+      id: '/_authenticated/tool/disparos'
+      path: '/tool/disparos'
+      fullPath: '/tool/disparos'
+      preLoaderRoute: typeof AuthenticatedToolDisparosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tool/disparos/': {
+      id: '/_authenticated/tool/disparos/'
+      path: '/'
+      fullPath: '/tool/disparos/'
+      preLoaderRoute: typeof AuthenticatedToolDisparosIndexRouteImport
+      parentRoute: typeof AuthenticatedToolDisparosRoute
+    }
+    '/_authenticated/tool/disparos_/sobre': {
+      id: '/_authenticated/tool/disparos_/sobre'
+      path: '/tool/disparos/sobre'
+      fullPath: '/tool/disparos/sobre'
+      preLoaderRoute: typeof AuthenticatedToolDisparosSobreRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tool/disparos_/manual': {
+      id: '/_authenticated/tool/disparos_/manual'
+      path: '/tool/disparos/manual'
+      fullPath: '/tool/disparos/manual'
+      preLoaderRoute: typeof AuthenticatedToolDisparosManualRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tool/disparos/historico': {
+      id: '/_authenticated/tool/disparos/historico'
+      path: '/historico'
+      fullPath: '/tool/disparos/historico'
+      preLoaderRoute: typeof AuthenticatedToolDisparosHistoricoRouteImport
+      parentRoute: typeof AuthenticatedToolDisparosRoute
+    }
+    '/_authenticated/tool/disparos/disparar': {
+      id: '/_authenticated/tool/disparos/disparar'
+      path: '/disparar'
+      fullPath: '/tool/disparos/disparar'
+      preLoaderRoute: typeof AuthenticatedToolDisparosDispararRouteImport
+      parentRoute: typeof AuthenticatedToolDisparosRoute
+    }
+    '/_authenticated/tool/disparos/contatos': {
+      id: '/_authenticated/tool/disparos/contatos'
+      path: '/contatos'
+      fullPath: '/tool/disparos/contatos'
+      preLoaderRoute: typeof AuthenticatedToolDisparosContatosRouteImport
+      parentRoute: typeof AuthenticatedToolDisparosRoute
+    }
+    '/_authenticated/tool/disparos/configuracoes': {
+      id: '/_authenticated/tool/disparos/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/tool/disparos/configuracoes'
+      preLoaderRoute: typeof AuthenticatedToolDisparosConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedToolDisparosRoute
+    }
+    '/_authenticated/tool/disparos/clientes': {
+      id: '/_authenticated/tool/disparos/clientes'
+      path: '/clientes'
+      fullPath: '/tool/disparos/clientes'
+      preLoaderRoute: typeof AuthenticatedToolDisparosClientesRouteImport
+      parentRoute: typeof AuthenticatedToolDisparosRoute
+    }
+    '/_authenticated/tool/disparos/analytics': {
+      id: '/_authenticated/tool/disparos/analytics'
+      path: '/analytics'
+      fullPath: '/tool/disparos/analytics'
+      preLoaderRoute: typeof AuthenticatedToolDisparosAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedToolDisparosRoute
+    }
+    '/_authenticated/tool/disparos/agendamentos': {
+      id: '/_authenticated/tool/disparos/agendamentos'
+      path: '/agendamentos'
+      fullPath: '/tool/disparos/agendamentos'
+      preLoaderRoute: typeof AuthenticatedToolDisparosAgendamentosRouteImport
+      parentRoute: typeof AuthenticatedToolDisparosRoute
+    }
     '/_authenticated/oauth/meta/callback': {
       id: '/_authenticated/oauth/meta/callback'
       path: '/oauth/meta/callback'
@@ -264,23 +527,86 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOauthGoogleCallbackRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/tool/disparos/templates/': {
+      id: '/_authenticated/tool/disparos/templates/'
+      path: '/templates'
+      fullPath: '/tool/disparos/templates/'
+      preLoaderRoute: typeof AuthenticatedToolDisparosTemplatesIndexRouteImport
+      parentRoute: typeof AuthenticatedToolDisparosRoute
+    }
+    '/_authenticated/tool/disparos/templates/novo': {
+      id: '/_authenticated/tool/disparos/templates/novo'
+      path: '/templates/novo'
+      fullPath: '/tool/disparos/templates/novo'
+      preLoaderRoute: typeof AuthenticatedToolDisparosTemplatesNovoRouteImport
+      parentRoute: typeof AuthenticatedToolDisparosRoute
+    }
   }
 }
+
+interface AuthenticatedToolDisparosRouteChildren {
+  AuthenticatedToolDisparosAgendamentosRoute: typeof AuthenticatedToolDisparosAgendamentosRoute
+  AuthenticatedToolDisparosAnalyticsRoute: typeof AuthenticatedToolDisparosAnalyticsRoute
+  AuthenticatedToolDisparosClientesRoute: typeof AuthenticatedToolDisparosClientesRoute
+  AuthenticatedToolDisparosConfiguracoesRoute: typeof AuthenticatedToolDisparosConfiguracoesRoute
+  AuthenticatedToolDisparosContatosRoute: typeof AuthenticatedToolDisparosContatosRoute
+  AuthenticatedToolDisparosDispararRoute: typeof AuthenticatedToolDisparosDispararRoute
+  AuthenticatedToolDisparosHistoricoRoute: typeof AuthenticatedToolDisparosHistoricoRoute
+  AuthenticatedToolDisparosIndexRoute: typeof AuthenticatedToolDisparosIndexRoute
+  AuthenticatedToolDisparosTemplatesNovoRoute: typeof AuthenticatedToolDisparosTemplatesNovoRoute
+  AuthenticatedToolDisparosTemplatesIndexRoute: typeof AuthenticatedToolDisparosTemplatesIndexRoute
+}
+
+const AuthenticatedToolDisparosRouteChildren: AuthenticatedToolDisparosRouteChildren =
+  {
+    AuthenticatedToolDisparosAgendamentosRoute:
+      AuthenticatedToolDisparosAgendamentosRoute,
+    AuthenticatedToolDisparosAnalyticsRoute:
+      AuthenticatedToolDisparosAnalyticsRoute,
+    AuthenticatedToolDisparosClientesRoute:
+      AuthenticatedToolDisparosClientesRoute,
+    AuthenticatedToolDisparosConfiguracoesRoute:
+      AuthenticatedToolDisparosConfiguracoesRoute,
+    AuthenticatedToolDisparosContatosRoute:
+      AuthenticatedToolDisparosContatosRoute,
+    AuthenticatedToolDisparosDispararRoute:
+      AuthenticatedToolDisparosDispararRoute,
+    AuthenticatedToolDisparosHistoricoRoute:
+      AuthenticatedToolDisparosHistoricoRoute,
+    AuthenticatedToolDisparosIndexRoute: AuthenticatedToolDisparosIndexRoute,
+    AuthenticatedToolDisparosTemplatesNovoRoute:
+      AuthenticatedToolDisparosTemplatesNovoRoute,
+    AuthenticatedToolDisparosTemplatesIndexRoute:
+      AuthenticatedToolDisparosTemplatesIndexRoute,
+  }
+
+const AuthenticatedToolDisparosRouteWithChildren =
+  AuthenticatedToolDisparosRoute._addFileChildren(
+    AuthenticatedToolDisparosRouteChildren,
+  )
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
+  AuthenticatedPlanosRoute: typeof AuthenticatedPlanosRoute
+  AuthenticatedToolDisparosRoute: typeof AuthenticatedToolDisparosRouteWithChildren
   AuthenticatedOauthGoogleCallbackRoute: typeof AuthenticatedOauthGoogleCallbackRoute
   AuthenticatedOauthMetaCallbackRoute: typeof AuthenticatedOauthMetaCallbackRoute
+  AuthenticatedToolDisparosManualRoute: typeof AuthenticatedToolDisparosManualRoute
+  AuthenticatedToolDisparosSobreRoute: typeof AuthenticatedToolDisparosSobreRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
+  AuthenticatedPlanosRoute: AuthenticatedPlanosRoute,
+  AuthenticatedToolDisparosRoute: AuthenticatedToolDisparosRouteWithChildren,
   AuthenticatedOauthGoogleCallbackRoute: AuthenticatedOauthGoogleCallbackRoute,
   AuthenticatedOauthMetaCallbackRoute: AuthenticatedOauthMetaCallbackRoute,
+  AuthenticatedToolDisparosManualRoute: AuthenticatedToolDisparosManualRoute,
+  AuthenticatedToolDisparosSobreRoute: AuthenticatedToolDisparosSobreRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
