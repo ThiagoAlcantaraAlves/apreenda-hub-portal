@@ -7,9 +7,24 @@ import { TenantBranding } from "@/components/TenantBranding";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
-  beforeLoad: async () => {
+  beforeLoad: async ({ location }) => {
+    // Read from localStorage first to avoid false-logout flicker while the
+    // iframe hydrates the Supabase session.
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) {
+      throw redirect({
+        to: "/auth",
+        search: { reason: "expired", redirect: location.href },
+      });
+    }
+    // Validate the session against the auth server (cheap; revalidates token).
     const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) throw redirect({ to: "/auth" });
+    if (error || !data.user) {
+      throw redirect({
+        to: "/auth",
+        search: { reason: "expired", redirect: location.href },
+      });
+    }
   },
   component: AuthedLayout,
 });
