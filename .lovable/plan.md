@@ -1,25 +1,24 @@
-# Plano aprovado
+# Plano
 
-## Banco
-- Migration `google_tokens` (user_id, access_token, refresh_token, expires_at, ga4_property_id/name, ads_customer_id/name) + GRANTs + RLS (SELECT own row).
+## Objetivo
+Fazer o preview voltar a carregar normalmente, em vez de mostrar a tela cinza de “Preview has not been built yet”.
 
-## Novos arquivos
-- `src/lib/google-oauth.ts` — client ID + `getGoogleOAuthUrl()` + `googleCallbackUri()`.
-- `src/lib/google.functions.ts` — `googleExchangeCode`, `googleListAssets`, `googleSelectAssets`, `getValidGoogleToken` (refresh auto).
-- `src/routes/_authenticated/oauth.google.callback.tsx`.
-- `src/routes/_authenticated/oauth.meta.callback.tsx` (substitui o antigo `meta-callback`).
+## O que vou corrigir
+1. Revisar o ponto que está quebrando o build/dev server do app.
+2. Ajustar a configuração de inicialização/roteamento que estiver impedindo o preview de subir.
+3. Validar que a rota `/home` volta a renderizar e que o app não fica em branco após o login.
 
-## Alterações
-- `src/lib/fb-oauth.ts` — `FB_APP_ID="962713629923248"`, scopes `ads_read,read_insights`, callback `/oauth/meta/callback`.
-- `src/routes/_authenticated/dashboard.tsx` — adiciona estado Google, tela `ConnectAccounts` (Meta + Google), `GooglePicker` (GA4 + Ads opcional), hint da fonte que falta.
+## Foco da investigação
+- Configuração do servidor/preview (`vite.config.ts`, `src/server.ts`, `src/start.ts`)
+- Estrutura do roteador e rotas autenticadas (`src/router.tsx`, `src/routes/_authenticated/route.tsx`, `src/routes/auth.tsx`)
+- Arquivo gerado de rotas, porque houve edição anterior nele e isso pode ter deixado o app instável
 
-## Remoção
-- `src/routes/_authenticated/meta-callback.tsx`.
+## Resultado esperado
+- O preview deixa de exibir a mensagem de build quebrado
+- A aplicação carrega novamente
+- Após login, a navegação para `/home` funciona sem tela vazia
 
-## Após implementar
-- Pedir secrets: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_ADS_DEVELOPER_TOKEN` (opcional), atualizar `META_APP_ID` para `962713629923248`.
-
-## Confirmado pelo usuário
-- Troca de Meta App ID ok (reconexão dos antigos).
-- Redirect URIs já cadastradas em produção (Meta + Google).
-- Sem necessidade de cadastrar preview.
+## Detalhes técnicos
+- Vou priorizar a causa de build/runtime do preview, não mudanças visuais.
+- Se houver configuração incorreta no bootstrap do TanStack Start ou no roteamento autenticado, ela será corrigida sem alterar funcionalidades além do necessário.
+- Depois, valido o fluxo mínimo: carregar app, abrir `/auth`, navegar para `/home`.
