@@ -206,7 +206,7 @@ export default function CadastrarTemplate() {
 
   const getPreviewText = () => {
     let text = bodyText;
-    (text.match(/\{\{(\d+)\}\}/g) || []).forEach((v) => { text = text.replace(v, `[Variável ${v}]`); });
+    (text.match(/\{\{(\d+)\}\}/g) || []).forEach((v: string) => { text = text.replace(v, `[Variável ${v}]`); });
     return text;
   };
 
