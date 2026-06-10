@@ -11,6 +11,10 @@ import { lovable } from "@/integrations/lovable";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
+  validateSearch: (search: Record<string, unknown>) => ({
+    reason: typeof search.reason === "string" ? search.reason : undefined,
+    redirect: typeof search.redirect === "string" ? search.redirect : undefined,
+  }),
   component: AuthPage,
 });
 
@@ -34,15 +38,37 @@ type Mode = "login" | "signup" | "forgot";
 function AuthPage() {
   const { session, loading } = useAuth();
   const navigate = useNavigate();
+  const { reason, redirect: redirectTo } = Route.useSearch();
   const [mode, setMode] = useState<Mode>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [busy, setBusy] = useState(false);
 
+  // Show a single notice if we landed here because the session expired.
   useEffect(() => {
-    if (!loading && session) navigate({ to: "/home", replace: true });
-  }, [loading, session, navigate]);
+    if (reason === "expired") {
+      toast.message("Sua sessão expirou. Entre novamente para continuar.");
+    }
+  }, [reason]);
+
+  // Compute a safe internal redirect target (same-origin path only).
+  const safeRedirect = (() => {
+    if (!redirectTo) return "/home";
+    try {
+      const url = new URL(redirectTo, window.location.origin);
+      if (url.origin !== window.location.origin) return "/home";
+      return url.pathname + url.search + url.hash;
+    } catch {
+      return "/home";
+    }
+  })();
+
+  useEffect(() => {
+    if (!loading && session) {
+      window.location.replace(safeRedirect);
+    }
+  }, [loading, session, safeRedirect]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
