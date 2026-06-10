@@ -71,3 +71,5 @@ serve(async (req) => {
     });
   }
 });
+
+// lovable redeploy nudge — 2026-06-10

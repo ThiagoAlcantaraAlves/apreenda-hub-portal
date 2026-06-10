@@ -147,3 +147,5 @@ Deno.serve(async (req) => {
     return jsonRes(500, { error: "internal_server_error" });
   }
 });
+
+// lovable redeploy nudge — 2026-06-10

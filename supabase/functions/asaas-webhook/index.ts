@@ -118,3 +118,5 @@ Deno.serve(async (req) => {
 
   return jsonRes(200, { ok: true });
 });
+
+// lovable redeploy nudge — 2026-06-10
