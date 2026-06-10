@@ -548,16 +548,16 @@ REVOKE EXECUTE ON FUNCTION public.refund_credits(uuid,int,text) FROM public, ano
 -- =====================================================================
 INSERT INTO public.subscription_plans (name, description, price_cents, interval, monthly_credits, trial_days, display_order)
 SELECT * FROM (VALUES
-  ('Disparos Essencial', 'Para começar a disparar no WhatsApp.', 9700, 'monthly', 1000, 7, 1),
-  ('Disparos Pro', 'Volume recorrente para a operação.', 19700, 'monthly', 5000, 7, 2),
-  ('Disparos Pro Anual', 'Pro com 2 meses grátis.', 197000, 'yearly', 5000, 7, 3)
+  ('Disparos Essencial', 'Para começar a disparar no WhatsApp.', 9700, 'monthly', 2000, 7, 1),
+  ('Disparos Profissional', 'Volume recorrente para a operação.', 19700, 'monthly', 8000, 7, 2),
+  ('Disparos Pro Anual', 'Profissional com 2 meses grátis.', 197000, 'yearly', 8000, 7, 3)
 ) AS v(name, description, price_cents, interval, monthly_credits, trial_days, display_order)
 WHERE NOT EXISTS (SELECT 1 FROM public.subscription_plans);
 
 INSERT INTO public.credit_packs (name, description, price_cents, credits, display_order)
 SELECT * FROM (VALUES
-  ('Pacote 1.000 disparos', 'Recarga rápida.', 7900, 1000, 1),
-  ('Pacote 5.000 disparos', 'Melhor custo-benefício.', 29700, 5000, 2),
-  ('Pacote 15.000 disparos', 'Para campanhas grandes.', 79700, 15000, 3)
+  ('Pacote 2.000 disparos', 'Recarga rápida.', 7900, 2000, 1),
+  ('Pacote 8.000 disparos', 'Melhor custo-benefício.', 24900, 8000, 2),
+  ('Pacote 20.000 disparos', 'Para campanhas grandes.', 54900, 20000, 3)
 ) AS v(name, description, price_cents, credits, display_order)
 WHERE NOT EXISTS (SELECT 1 FROM public.credit_packs);
