@@ -42,42 +42,44 @@
   --color-status-good: var(--status-good);
   --color-status-warning: var(--status-warning);
   --color-status-critical: var(--status-critical);
-  --font-display: "Cinzel", serif;
+  --font-display: "Newsreader", Georgia, serif;
+  --font-serif: "Newsreader", Georgia, serif;
   --font-sans: "Montserrat", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 :root {
   --radius: 0.5rem;
-  /* Apreenda dark luxe */
-  --background: oklch(0.16 0 0);              /* #0d0d0d */
-  --foreground: oklch(0.88 0.05 85);          /* champagne #E8D5A3 */
-  --card: oklch(0.21 0 0);                    /* #1a1a1a */
-  --card-foreground: oklch(0.88 0.05 85);
-  --popover: oklch(0.21 0 0);
-  --popover-foreground: oklch(0.88 0.05 85);
-  --primary: oklch(0.74 0.12 85);             /* gold #C9A84C */
-  --primary-foreground: oklch(0.16 0 0);
-  --secondary: oklch(0.25 0 0);
-  --secondary-foreground: oklch(0.88 0.05 85);
-  --muted: oklch(0.24 0 0);
-  --muted-foreground: oklch(0.65 0.03 85);
-  --accent: oklch(0.30 0.04 85);
-  --accent-foreground: oklch(0.88 0.05 85);
-  --destructive: oklch(0.55 0.22 27);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.74 0.12 85 / 25%);        /* gold thin border */
-  --input: oklch(0.74 0.12 85 / 20%);
-  --ring: oklch(0.74 0.12 85);
-  --gold: oklch(0.74 0.12 85);
-  --gold-soft: oklch(0.74 0.12 85 / 50%);
-  --champagne: oklch(0.88 0.05 85);
-  /* sidebar (shell de Disparos) — dourado sobre escuro */
-  --sidebar: oklch(0.19 0 0);
-  --sidebar-foreground: oklch(0.88 0.05 85);
-  --sidebar-accent: oklch(0.30 0.04 85);
-  --sidebar-accent-foreground: oklch(0.88 0.05 85);
-  --sidebar-border: oklch(0.74 0.12 85 / 18%);
-  --sidebar-ring: oklch(0.74 0.12 85);
+  /* Apreenda — meia-noite + dourado (a marca é sempre escura) */
+  --background: hsl(220 29% 6%);              /* #0B0E14 meia-noite (base) */
+  --foreground: hsl(222 24% 94%);             /* #EDEFF4 branco suave */
+  --card: hsl(220 27% 9%);                    /* #10141C painel */
+  --card-foreground: hsl(222 24% 94%);
+  --popover: hsl(220 27% 9%);
+  --popover-foreground: hsl(222 24% 94%);
+  --primary: hsl(39 47% 60%);                 /* #C9A86B dourado (acento / CTA) */
+  --primary-foreground: hsl(220 29% 6%);      /* texto escuro sobre o dourado */
+  --secondary: hsl(220 20% 13%);
+  --secondary-foreground: hsl(222 24% 94%);
+  --muted: hsl(220 18% 16%);
+  --muted-foreground: hsl(221 14% 62%);       /* #8A93A6 ardósia */
+  --accent: hsl(39 47% 60%);                  /* dourado */
+  --accent-foreground: hsl(220 29% 6%);
+  --destructive: hsl(0 72% 51%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(220 14% 15%);                 /* hairline ~ rgba(255,255,255,.08) */
+  --input: hsl(220 14% 15%);
+  --ring: hsl(39 47% 60%);
+  --gold: hsl(39 47% 60%);                    /* dourado */
+  --gold-soft: hsl(39 47% 60% / 0.5);
+  --champagne: hsl(39 53% 80%);               /* champanhe claro #E7D4B1 */
+  /* sidebar (shell de Disparos) — dourado sobre meia-noite */
+  --sidebar: hsl(220 30% 5%);
+  --sidebar-foreground: hsl(222 20% 90%);
+  --sidebar-accent: hsl(220 22% 12%);
+  --sidebar-accent-foreground: hsl(222 20% 90%);
+  --sidebar-border: hsl(220 18% 14%);
+  --sidebar-ring: hsl(39 47% 60%);
   /* status (dashboard) */
   --status-excellent: oklch(0.62 0.16 145);
   --status-good: oklch(0.70 0.12 215);
@@ -90,31 +92,34 @@
 }
 
 .dark {
-  --background: oklch(0.16 0 0);
-  --foreground: oklch(0.88 0.05 85);
-  --card: oklch(0.21 0 0);
-  --card-foreground: oklch(0.88 0.05 85);
-  --popover: oklch(0.21 0 0);
-  --popover-foreground: oklch(0.88 0.05 85);
-  --primary: oklch(0.74 0.12 85);
-  --primary-foreground: oklch(0.16 0 0);
-  --secondary: oklch(0.25 0 0);
-  --secondary-foreground: oklch(0.88 0.05 85);
-  --muted: oklch(0.24 0 0);
-  --muted-foreground: oklch(0.65 0.03 85);
-  --accent: oklch(0.30 0.04 85);
-  --accent-foreground: oklch(0.88 0.05 85);
-  --destructive: oklch(0.55 0.22 27);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.74 0.12 85 / 25%);
-  --input: oklch(0.74 0.12 85 / 20%);
-  --ring: oklch(0.74 0.12 85);
-  --sidebar: oklch(0.19 0 0);
-  --sidebar-foreground: oklch(0.88 0.05 85);
-  --sidebar-accent: oklch(0.30 0.04 85);
-  --sidebar-accent-foreground: oklch(0.88 0.05 85);
-  --sidebar-border: oklch(0.74 0.12 85 / 18%);
-  --sidebar-ring: oklch(0.74 0.12 85);
+  --background: hsl(220 29% 6%);
+  --foreground: hsl(222 24% 94%);
+  --card: hsl(220 27% 9%);
+  --card-foreground: hsl(222 24% 94%);
+  --popover: hsl(220 27% 9%);
+  --popover-foreground: hsl(222 24% 94%);
+  --primary: hsl(39 47% 60%);
+  --primary-foreground: hsl(220 29% 6%);
+  --secondary: hsl(220 20% 13%);
+  --secondary-foreground: hsl(222 24% 94%);
+  --muted: hsl(220 18% 16%);
+  --muted-foreground: hsl(221 14% 62%);
+  --accent: hsl(39 47% 60%);
+  --accent-foreground: hsl(220 29% 6%);
+  --destructive: hsl(0 72% 51%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(220 14% 15%);
+  --input: hsl(220 14% 15%);
+  --ring: hsl(39 47% 60%);
+  --gold: hsl(39 47% 60%);
+  --gold-soft: hsl(39 47% 60% / 0.5);
+  --champagne: hsl(39 53% 80%);
+  --sidebar: hsl(220 30% 5%);
+  --sidebar-foreground: hsl(222 20% 90%);
+  --sidebar-accent: hsl(220 22% 12%);
+  --sidebar-accent-foreground: hsl(222 20% 90%);
+  --sidebar-border: hsl(220 18% 14%);
+  --sidebar-ring: hsl(39 47% 60%);
 }
 
 @layer base {
@@ -156,3 +161,87 @@
   .no-print { display: none !important; }
   html { background: white; }
 }
+
+/* ──────────────────────────────────────────────────────────────
+   CAMADA EDITORIAL — alinhamento de marca (meia-noite + dourado)
+   Grid/grão só em .ed-surface (páginas de marketing). Utilitários
+   .ed-* podem ser usados em qualquer página.
+   TanStack/Vite (Tailwind v4): regras soltas, sem wrappers @layer.
+   ────────────────────────────────────────────────────────────── */
+:root {
+  --ed-gold: 39 47% 56%;
+  --ed-champagne: 39 53% 80%;
+  --ed-line: 39 53% 80% / 0.14;
+  --ed-line2: 0 0% 100% / 0.06;
+}
+
+/* grid "blueprint" + glow, escopado nas páginas de marketing */
+.ed-surface { position: relative; }
+.ed-surface::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(hsl(var(--ed-line2)) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--ed-line2)) 1px, transparent 1px);
+  background-size: 76px 76px;
+  -webkit-mask-image: radial-gradient(135% 115% at 50% -10%, #000 32%, transparent 80%);
+          mask-image: radial-gradient(135% 115% at 50% -10%, #000 32%, transparent 80%);
+}
+.ed-surface::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .4;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+@media (prefers-reduced-motion: reduce) {
+  .ed-surface::before, .ed-surface::after { display: none; }
+}
+
+.font-serif, .font-display { font-weight: 600; }
+
+.ed-glow {
+  position: absolute; width: 90vw; max-width: 1000px; aspect-ratio: 1;
+  background: radial-gradient(circle, hsl(var(--ed-gold) / .16), transparent 62%);
+  filter: blur(24px); pointer-events: none; z-index: 0;
+}
+.ed-kicker {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: .72rem; font-weight: 500; letter-spacing: .22em;
+  text-transform: uppercase; color: hsl(var(--ed-champagne) / .85);
+}
+.ed-kicker::before { content: ""; width: 1.6rem; height: 1px; background: hsl(var(--ed-gold) / .7); }
+.ed-index {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: hsl(0 0% 100% / .4);
+}
+.ed-index b { color: hsl(var(--ed-champagne) / .9); font-weight: 600; }
+.ed-rule { border-top: 1px solid hsl(var(--ed-line)); }
+.ed-bignum {
+  font-family: 'Newsreader', Georgia, serif; font-weight: 600; line-height: .85;
+  background: linear-gradient(180deg, hsl(var(--ed-champagne)) 0%, hsl(var(--ed-gold) / .35) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+.ed-btn {
+  display: inline-flex; align-items: center; gap: .5rem; border-radius: 9999px;
+  transition: transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s cubic-bezier(.16,1,.3,1);
+  will-change: transform;
+}
+.ed-btn:hover { transform: translateY(-3px); }
+
+.ed-linemask { overflow: hidden; display: block; }
+.ed-aim { position: relative; }
+.ed-aim::before, .ed-aim::after {
+  content: ""; position: absolute; width: 20px; height: 20px;
+  border-color: hsl(var(--ed-champagne) / .55); border-style: solid; pointer-events: none;
+}
+.ed-aim::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+.ed-aim::after { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }

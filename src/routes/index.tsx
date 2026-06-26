@@ -49,9 +49,9 @@ const STEPS = [
 
 function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="ed-surface min-h-screen flex flex-col">
       {/* Header */}
-      <header className="border-b border-border/60 bg-card/40 backdrop-blur">
+      <header className="relative z-10 border-b border-border/60 bg-card/40 backdrop-blur">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <span className="flex items-baseline gap-3">
             <span className="font-display text-2xl text-primary tracking-[0.2em]">APREENDA</span>
@@ -63,14 +63,14 @@ function LandingPage() {
         </div>
       </header>
 
-      <main className="flex-1">
+      <main className="relative z-10 flex-1">
         {/* Hero */}
         <section className="max-w-3xl mx-auto px-6 pt-20 pb-16 text-center">
-          <p className="text-[11px] uppercase tracking-[0.35em] text-primary">Painel de marketing</p>
-          <h1 className="mt-5 font-display text-4xl md:text-6xl leading-tight text-foreground">
+          <span className="ed-kicker justify-center">Painel de marketing</span>
+          <h1 className="mt-5 font-serif text-4xl md:text-6xl leading-tight text-foreground">
             Suas campanhas,
             <br />
-            <span className="text-primary">em um só lugar.</span>
+            em um só <span className="italic text-primary">lugar.</span>
           </h1>
           <p className="mt-6 text-base md:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
             O Apreenda Dashboard conecta suas contas de anúncios e mostra o desempenho real das suas
@@ -144,7 +144,7 @@ function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border/60">
+      <footer className="relative z-10 border-t border-border/60">
         <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="font-display text-sm text-primary tracking-[0.2em]">APREENDA</span>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
