@@ -27,7 +27,7 @@ const FEATURES = [
   {
     icon: Plug,
     title: "Conecte em 1 clique",
-    desc: "Faça login com o Facebook, escolha a conta de anúncios e pronto. Sem planilha, sem exportar relatório, sem complicação.",
+    desc: "Faça login com a Meta ou o Google, escolha a conta e pronto. Sem planilha, sem exportar relatório, sem complicação.",
   },
   {
     icon: LineChart,
