@@ -51,35 +51,35 @@
 :root {
   --radius: 0.5rem;
   /* Apreenda — meia-noite + dourado (a marca é sempre escura) */
-  --background: hsl(220 29% 6%);              /* #0B0E14 meia-noite (base) */
-  --foreground: hsl(222 24% 94%);             /* #EDEFF4 branco suave */
-  --card: hsl(220 27% 9%);                    /* #10141C painel */
-  --card-foreground: hsl(222 24% 94%);
-  --popover: hsl(220 27% 9%);
-  --popover-foreground: hsl(222 24% 94%);
-  --primary: hsl(39 47% 60%);                 /* #C9A86B dourado (acento / CTA) */
-  --primary-foreground: hsl(220 29% 6%);      /* texto escuro sobre o dourado */
-  --secondary: hsl(220 20% 13%);
-  --secondary-foreground: hsl(222 24% 94%);
-  --muted: hsl(220 18% 16%);
-  --muted-foreground: hsl(221 14% 62%);       /* #8A93A6 ardósia */
-  --accent: hsl(39 47% 60%);                  /* dourado */
-  --accent-foreground: hsl(220 29% 6%);
+  --background: hsl(222 42% 9%);              /* #0B0E14 meia-noite (base) */
+  --foreground: hsl(220 30% 96%);             /* #EDEFF4 branco suave */
+  --card: hsl(222 34% 13%);                    /* #10141C painel */
+  --card-foreground: hsl(220 30% 96%);
+  --popover: hsl(222 34% 13%);
+  --popover-foreground: hsl(220 30% 96%);
+  --primary: hsl(39 60% 58%);                 /* #C9A86B dourado (acento / CTA) */
+  --primary-foreground: hsl(222 42% 9%);      /* texto escuro sobre o dourado */
+  --secondary: hsl(222 26% 17%);
+  --secondary-foreground: hsl(220 30% 96%);
+  --muted: hsl(222 22% 20%);
+  --muted-foreground: hsl(220 15% 66%);       /* #8A93A6 ardósia */
+  --accent: hsl(39 60% 58%);                  /* dourado */
+  --accent-foreground: hsl(222 42% 9%);
   --destructive: hsl(0 72% 51%);
   --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(220 14% 15%);                 /* hairline ~ rgba(255,255,255,.08) */
-  --input: hsl(220 14% 15%);
-  --ring: hsl(39 47% 60%);
-  --gold: hsl(39 47% 60%);                    /* dourado */
-  --gold-soft: hsl(39 47% 60% / 0.5);
-  --champagne: hsl(39 53% 80%);               /* champanhe claro #E7D4B1 */
+  --border: hsl(220 24% 20%);                 /* hairline ~ rgba(255,255,255,.08) */
+  --input: hsl(220 24% 20%);
+  --ring: hsl(39 60% 58%);
+  --gold: hsl(39 60% 58%);                    /* dourado */
+  --gold-soft: hsl(39 60% 58% / 0.5);
+  --champagne: hsl(39 58% 78%);               /* champanhe claro #E7D4B1 */
   /* sidebar (shell de Disparos) — dourado sobre meia-noite */
-  --sidebar: hsl(220 30% 5%);
-  --sidebar-foreground: hsl(222 20% 90%);
-  --sidebar-accent: hsl(220 22% 12%);
-  --sidebar-accent-foreground: hsl(222 20% 90%);
-  --sidebar-border: hsl(220 18% 14%);
-  --sidebar-ring: hsl(39 47% 60%);
+  --sidebar: hsl(222 44% 7%);
+  --sidebar-foreground: hsl(220 26% 92%);
+  --sidebar-accent: hsl(222 28% 15%);
+  --sidebar-accent-foreground: hsl(220 26% 92%);
+  --sidebar-border: hsl(220 26% 17%);
+  --sidebar-ring: hsl(39 60% 58%);
   /* status (dashboard) */
   --status-excellent: oklch(0.62 0.16 145);
   --status-good: oklch(0.70 0.12 215);
@@ -92,34 +92,34 @@
 }
 
 .dark {
-  --background: hsl(220 29% 6%);
-  --foreground: hsl(222 24% 94%);
-  --card: hsl(220 27% 9%);
-  --card-foreground: hsl(222 24% 94%);
-  --popover: hsl(220 27% 9%);
-  --popover-foreground: hsl(222 24% 94%);
-  --primary: hsl(39 47% 60%);
-  --primary-foreground: hsl(220 29% 6%);
-  --secondary: hsl(220 20% 13%);
-  --secondary-foreground: hsl(222 24% 94%);
-  --muted: hsl(220 18% 16%);
-  --muted-foreground: hsl(221 14% 62%);
-  --accent: hsl(39 47% 60%);
-  --accent-foreground: hsl(220 29% 6%);
+  --background: hsl(222 42% 9%);
+  --foreground: hsl(220 30% 96%);
+  --card: hsl(222 34% 13%);
+  --card-foreground: hsl(220 30% 96%);
+  --popover: hsl(222 34% 13%);
+  --popover-foreground: hsl(220 30% 96%);
+  --primary: hsl(39 60% 58%);
+  --primary-foreground: hsl(222 42% 9%);
+  --secondary: hsl(222 26% 17%);
+  --secondary-foreground: hsl(220 30% 96%);
+  --muted: hsl(222 22% 20%);
+  --muted-foreground: hsl(220 15% 66%);
+  --accent: hsl(39 60% 58%);
+  --accent-foreground: hsl(222 42% 9%);
   --destructive: hsl(0 72% 51%);
   --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(220 14% 15%);
-  --input: hsl(220 14% 15%);
-  --ring: hsl(39 47% 60%);
-  --gold: hsl(39 47% 60%);
-  --gold-soft: hsl(39 47% 60% / 0.5);
-  --champagne: hsl(39 53% 80%);
-  --sidebar: hsl(220 30% 5%);
-  --sidebar-foreground: hsl(222 20% 90%);
-  --sidebar-accent: hsl(220 22% 12%);
-  --sidebar-accent-foreground: hsl(222 20% 90%);
-  --sidebar-border: hsl(220 18% 14%);
-  --sidebar-ring: hsl(39 47% 60%);
+  --border: hsl(220 24% 20%);
+  --input: hsl(220 24% 20%);
+  --ring: hsl(39 60% 58%);
+  --gold: hsl(39 60% 58%);
+  --gold-soft: hsl(39 60% 58% / 0.5);
+  --champagne: hsl(39 58% 78%);
+  --sidebar: hsl(222 44% 7%);
+  --sidebar-foreground: hsl(220 26% 92%);
+  --sidebar-accent: hsl(222 28% 15%);
+  --sidebar-accent-foreground: hsl(220 26% 92%);
+  --sidebar-border: hsl(220 26% 17%);
+  --sidebar-ring: hsl(39 60% 58%);
 }
 
 @layer base {
@@ -169,10 +169,10 @@
    TanStack/Vite (Tailwind v4): regras soltas, sem wrappers @layer.
    ────────────────────────────────────────────────────────────── */
 :root {
-  --ed-gold: 39 47% 56%;
-  --ed-champagne: 39 53% 80%;
-  --ed-line: 39 53% 80% / 0.14;
-  --ed-line2: 0 0% 100% / 0.06;
+  --ed-gold: 39 62% 56%;
+  --ed-champagne: 39 58% 78%;
+  --ed-line: 39 58% 78% / 0.14;
+  --ed-line2: 212 70% 66% / 0.08;
 }
 
 /* grid "blueprint" + glow, escopado nas páginas de marketing */
