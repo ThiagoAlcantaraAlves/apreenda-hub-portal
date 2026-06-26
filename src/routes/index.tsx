@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
-  BarChart3, Facebook, Target, LineChart, ShieldCheck, Clock, ArrowRight, Plug, MousePointerClick,
+  BarChart3, Target, LineChart, ShieldCheck, Clock, ArrowRight, Plug, MousePointerClick, TrendingUp, PieChart,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -13,6 +13,16 @@ const FEATURES = [
     icon: Target,
     title: "Meta Ads em tempo real",
     desc: "Investimento, alcance, CTR, CPC, conversas e ROAS das suas campanhas de Facebook e Instagram — atualizados automaticamente.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Google Ads em tempo real",
+    desc: "Investimento, impressões, cliques, CTR, CPC, conversões e ROAS das suas campanhas do Google Ads — atualizados automaticamente, lado a lado com o Meta Ads.",
+  },
+  {
+    icon: PieChart,
+    title: "Google Analytics integrado",
+    desc: "Sessões, origens de tráfego e conversões do Google Analytics (GA4) conectadas ao desempenho das campanhas — pra você ver o caminho completo, do clique ao resultado.",
   },
   {
     icon: Plug,
@@ -31,8 +41,8 @@ const FEATURES = [
   },
   {
     icon: ShieldCheck,
-    title: "Acesso seguro",
-    desc: "Conexão somente leitura: nunca alteramos, pausamos ou publicamos nada nas suas contas. Seus dados ficam protegidos.",
+    title: "Acesso somente leitura",
+    desc: "A conexão com o Meta, o Google Ads e o Google Analytics é somente leitura: o Apreenda apenas lê os dados que você autoriza, exclusivamente para exibir no seu painel, e nunca cria, altera ou pausa nada nas suas contas.",
   },
   {
     icon: Clock,
@@ -42,7 +52,7 @@ const FEATURES = [
 ];
 
 const STEPS = [
-  { icon: Facebook, title: "Conecte o Facebook", desc: "Login rápido e seguro pela própria Meta." },
+  { icon: Plug, title: "Conecte suas contas", desc: "Login rápido e seguro pela Meta e pelo Google." },
   { icon: MousePointerClick, title: "Escolha a conta", desc: "Selecione qual conta de anúncios acompanhar." },
   { icon: BarChart3, title: "Veja tudo", desc: "Seu painel carrega com os dados em tempo real." },
 ];
@@ -73,8 +83,9 @@ function LandingPage() {
             em um só <span className="italic text-primary">lugar.</span>
           </h1>
           <p className="mt-6 text-base md:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            O Apreenda Dashboard conecta suas contas de anúncios e mostra o desempenho real das suas
-            campanhas em tempo real — sem planilha, sem achismo.
+            O Apreenda Dashboard conecta suas contas de Meta Ads (Facebook/Instagram), Google Ads e
+            Google Analytics e mostra o desempenho real das suas campanhas em tempo real — sem
+            planilha, sem achismo.
           </p>
           <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button asChild size="lg" className="w-full sm:w-auto">

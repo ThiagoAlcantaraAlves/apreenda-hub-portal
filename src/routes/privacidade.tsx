@@ -47,6 +47,44 @@ function PrivacidadePage() {
         </section>
 
         <section>
+          <h2 className="font-semibold text-primary mb-2">
+            Uso Limitado dos dados das APIs do Google (Limited Use)
+          </h2>
+          <p>
+            O uso e a transferência, pelo Apreenda Dashboard, de informações recebidas das APIs do
+            Google obedecem à{" "}
+            <a
+              href="https://developers.google.com/terms/api-services-user-data-policy"
+              className="text-primary underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google API Services User Data Policy
+            </a>
+            , incluindo os requisitos de Uso Limitado (Limited Use). Especificamente:
+          </p>
+          <ul className="mt-3 list-disc space-y-1 pl-5">
+            <li>
+              Os dados do Google Ads e do Google Analytics são usados exclusivamente para exibir
+              análises e relatórios dentro do seu próprio painel;
+            </li>
+            <li>
+              Não transferimos nem vendemos esses dados a terceiros, exceto quando estritamente
+              necessário para operar o serviço, por exigência legal ou com o seu consentimento;
+            </li>
+            <li>Não usamos esses dados para publicidade;</li>
+            <li>
+              Nenhum ser humano lê esses dados, exceto com o seu consentimento específico, para
+              fins de segurança (ex.: investigar abuso) ou quando exigido por lei.
+            </li>
+          </ul>
+          <p className="mt-3">
+            A conexão com o Google é somente leitura: não criamos, alteramos nem pausamos nada nas
+            suas contas.
+          </p>
+        </section>
+
+        <section>
           <h2 className="font-semibold text-primary mb-2">Armazenamento e segurança</h2>
           <p>
             Os dados ficam em infraestrutura segura (Supabase), com criptografia em trânsito e em
